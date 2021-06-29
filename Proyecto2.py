@@ -20,7 +20,7 @@ def index():
 def GET_datos():
     files=open('prueba.txt')
     
-    return Response(status=200,response=files.read(),content_type='text/plain')
+    return Response(status=200,response=files.read().encode('utf-8'),content_type='text/csv')
 @app.route('/datos',methods=['POST'])
 def POST_datos():
     file=request.data.decode('utf-8')
