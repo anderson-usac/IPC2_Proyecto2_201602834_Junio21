@@ -9,6 +9,41 @@ from xml.dom import minidom
 from requests.models import encode_multipart_formdata, parse_url
 from werkzeug.wrappers import response
 
+class Clientes:
+    def __init__(self, nombre,apellido,edad,fechacump,fechaprim):
+        self.nombre=nombre
+        self.apellido=apellido
+        self.edad=edad
+        self.fechacump=fechacump
+        self.fechaprim=fechaprim
+
+class MejoresCl:
+    def __init__(self,nombre,fechault,cantidadcomp,gastada):
+        self.nombre=nombre
+        self.fechault=fechault
+        self.cantidadcomp=cantidadcomp
+        self.gastada=gastada
+class Juegosven:
+    def __init__(self,nombre,fechault,copiasven,stock):
+        self.nombre=nombre
+        self.fechault=fechault
+        self.copiasven=copiasven
+        self.stock=stock
+class Juegos:
+    def __init__(self,nombre,plataforma,año,clasif,stock):
+        self.nombre=nombre
+        self.plataforma=plataforma
+        self.año=año
+        self.clasif=clasif
+        self.stock=stock
+        
+#-------listasprincipales----
+listacl=[]
+listamjcl=[]
+listajven=[]
+listajuegos=[]
+
+#-----listassecundarias-----------
 listaNombre=[] #nombre cl 
 listaApellido=[] #apellido cl
 listaEdad=[] #edad cl
@@ -22,10 +57,11 @@ listajuegosvem=[] #nombre juegos vendidos
 listafechaultimac=[] #fecha ultima compra
 listacopias=[] #copias vendidas
 listastock=[] #lista stock
-listajuegos=[] #juegos
+listanomj=[] #juegos
 listaplat=[] #plataformas
-listalanz=[]
-listaclasif=[]
+listalanz=[] #fecha lanz
+listaclasif=[] #clasif de juego
+listastockjuego=[] #stocks
 endpoint= 'http://localhost:5000/{}'
 # Create your views here.
 def index(request):
@@ -95,7 +131,7 @@ def index(request):
             juegosdata=csv.DictReader(j,delimiter=';',skipinitialspace=True)
             for jd in juegosdata:
                 nombrej=jd.get('Nombre')
-                listajuegos.append(''.join(nombrej))
+                listanomj.append(''.join(nombrej))
                 plaraforma=jd.get('Plataforma')
                 listaplat.append(''.join(plaraforma))
                 alanz=jd.get('AñoLanzamiento')
@@ -104,24 +140,25 @@ def index(request):
                 clas=jd.get('Clasificación')
                 clasif=re.findall('[EMT]',clas)
                 listaclasif.append(''.join(clasif))
+                cants=jd.get('Stock')
+                stockj=re.findall('[0-9]',cants)
+                listastockjuego.append(''.join(stockj))
+        
+        listacl.append(Clientes(listaNombre,listaApellido,listaEdad,listaFechacump,listaFechaprimera))
+        listamjcl.append(MejoresCl(listanombremjcl,listafucp,listacantcomp,listagasto))
+        listajven.append(Juegosven(listajuegosvem,listafechaultimac,listacopias,listastock))
+        listajuegos.append(Juegos(listanomj,listaplat,listalanz,listaclasif,listastockjuego))
 
+        xml_doc=minidom.Document()
+        root=xml_doc.createElement('CHET')
 
-                
-
-
-
-
-
-        #print('NomJ:',listajuegosvem)
-        #print('fecha:',listafechaultimac)
-        #print('copias:',listacopias)
-        #print('stock',listastock)
-        # print('fecha2:',listaFechaprimera)  
-        # print('mejorcl:',listanombremjcl)
-        # print('fechaup:',listafucp)
-        # print('Cantidad:',listacantcomp)
-        # print('gasto',listagasto)
+        for i in listacl:
+            varn=' '.join(i.nombre)
+            cliente_e=xml_doc.createElement('nombre')
+            cliente_e.appendChild(xml_doc.createTextNode(i.nombre))
+            root.appendChild(cliente_e)
+        xml_f=root.toprettyxml(indent='\t',encoding='utf-8')    
         
         url=endpoint.format('/datos')
-        requests.post(url,filecsv)
+        requests.post(url,xml_f)
         return redirect('index')
