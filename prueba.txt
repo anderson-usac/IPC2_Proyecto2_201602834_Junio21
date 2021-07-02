@@ -1,3 +1,32 @@
 <CHET>
-	<nombre>Xhunik Abdul Juan Daniel Carlos Daniel Brandon MariaAndrea Walther Zenaida</nombre>
+	<cliente1>
+		<nombre>Xhunik</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Abdul</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Juan</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Daniel</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Carlos</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Daniel</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Brandon</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>MariaAndrea</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Walther</nombre>
+	</cliente1>
+	<cliente1>
+		<nombre>Zenaida</nombre>
+	</cliente1>
 </CHET>
